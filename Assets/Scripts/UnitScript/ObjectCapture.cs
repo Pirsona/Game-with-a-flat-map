@@ -1,16 +1,15 @@
+using System;
 using UnityEngine;
 
 public class ObjectCapture : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Transform _capturePoint;
+    
+    
+    public void PickUpOre(Ore ore)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        ore.transform.SetParent(_capturePoint);
+        ore.transform.localPosition = Vector3.zero;
+        ore.DisableCollider();
     }
 }

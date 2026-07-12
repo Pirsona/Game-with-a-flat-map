@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46db1b3a5ed478240964f43e49856da2, type: 3}
   m_Name: StandartOre
   m_EditorClassIdentifier: 
+  _coast: 1

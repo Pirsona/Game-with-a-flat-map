@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: StandartUnity
   m_EditorClassIdentifier: 
   _speed: 5
-  _rotationSpeed: 5
+  _rotationSpeed: 360

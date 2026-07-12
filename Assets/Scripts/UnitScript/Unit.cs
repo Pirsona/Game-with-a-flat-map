@@ -1,8 +1,9 @@
-using System;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+    private const float CloseEnoughDistance = 1f;
+    
     public float Speed => _config.Speed;
     public float RotationSpeed => _config.RotationSpeed;
     public bool IsOccupied { get; private set; } = false;
@@ -14,8 +15,8 @@ public class Unit : MonoBehaviour
     [SerializeField] private ObjectCapture _objectCapture;
     [SerializeField] private ObjectGiver _objectGiver;
 
-
-    private Transform _currentTarget;
+    private Vector3 _targetPosition;
+    private Ore _targetOre;
     private Vector3 _startPosition;
     private Quaternion _startRotation;
     
@@ -28,22 +29,36 @@ public class Unit : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+        if(IsOccupied)
+        {
+            _mover.MoveToTarget(_targetPosition, Speed);
+            _rotator.RotateToTarget(_targetPosition, RotationSpeed);
+
+            if (Vector3Extensions.IsEnoughClose(transform.position, _targetPosition,CloseEnoughDistance) && _targetOre != null)
+            {
+                _objectCapture.PickUpOre(_targetOre);
+                MoveToBase();
+                _targetOre = null;
+            }
+            else if (Vector3Extensions.IsEnoughClose(transform.position, _startPosition,CloseEnoughDistance) && _targetOre == null)
+            {
+                _objectGiver.DropOre();
+                IsOccupied = false;
+            }
+        }
     }
 
 
     public void MoveToOre(Ore ore)
     {
         Debug.Log("Go To Ore");
-        IsOccupied = true;
-        _mover.MoveToTarget(ore.transform.position, Speed);
-        _rotator.RotateToTarget(ore.transform.rotation, RotationSpeed);
+        IsOccupied = true; 
+        _targetOre = ore;
+        _targetPosition = ore.transform.position;
     }
 
     public void MoveToBase()
     {
-        _mover.MoveToTarget(_startPosition, Speed);
-        _rotator.RotateToTarget(_startRotation, RotationSpeed);
-        IsOccupied = false;
+        _targetPosition = _startPosition;
     }
 }
