@@ -1,5 +1,4 @@
 using System;
-using OreScript;
 using UnityEngine;
 
 public class Base : MonoBehaviour
@@ -27,13 +26,10 @@ public class Base : MonoBehaviour
 
     private void OreFound(Ore ore)
     {
-        Debug.Log("Searching Unit");
         Unit freeUnit = _unitSelector.GetFreeUnit();
-        
         
         if (freeUnit != null)
         {
-            Debug.Log("Find Unit " + freeUnit.name);
             ore.BookOre();
             freeUnit.MoveToOre(ore);
         }

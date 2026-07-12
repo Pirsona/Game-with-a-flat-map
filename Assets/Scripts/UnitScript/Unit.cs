@@ -7,8 +7,7 @@ public class Unit : MonoBehaviour
     public float Speed => _config.Speed;
     public float RotationSpeed => _config.RotationSpeed;
     public bool IsOccupied { get; private set; } = false;
-
-
+    
     [SerializeField] private UnitConfig _config;
     [SerializeField] private UnitMover _mover;
     [SerializeField] private UnitRotator _rotator;
@@ -47,17 +46,15 @@ public class Unit : MonoBehaviour
         }
     }
 
-
+    private void MoveToBase()
+    {
+        _targetPosition = _startPosition;
+    }
+    
     public void MoveToOre(Ore ore)
     {
-        Debug.Log("Go To Ore");
         IsOccupied = true; 
         _targetOre = ore;
         _targetPosition = ore.transform.position;
-    }
-
-    public void MoveToBase()
-    {
-        _targetPosition = _startPosition;
     }
 }

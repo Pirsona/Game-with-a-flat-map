@@ -1,10 +1,7 @@
 using System;
 using System.Collections;
-using JetBrains.Annotations;
 using UnityEngine;
 
-namespace OreScript
-{
     public class OreSpawner : Spawner<Ore>
     {
         [SerializeField] private float _scanRadius;
@@ -14,9 +11,8 @@ namespace OreScript
         private bool _isSpawn = true;
         private WaitForSeconds _wait;
         private Coroutine _spawnCoroutine;
-
-
-        [CanBeNull] public event Action<float> ReturnedOre;
+        
+        public event Action<float> ReturnedOre;
 
         protected override void Awake()
         {
@@ -39,6 +35,7 @@ namespace OreScript
             while (_isSpawn)
             { 
                 yield return _wait;
+                
                 Ore spawnedOre = GetObject();
                 spawnedOre.Delivered += Return;
                 spawnedOre.transform.position = GetValidSpawnPosition();
@@ -79,4 +76,3 @@ namespace OreScript
             ReturnObject(ore);
         }
     }
-}

@@ -23,7 +23,6 @@ public class TextInformation : MonoBehaviour
         _base.ValueOreChange -= UpdateText;
     }
 
-
     private void UpdateText()
     {
         _text.text = $"Ore collection: {_base.ValueOre}";

@@ -6,7 +6,7 @@ using UnityEngine;
 public class Scanning : MonoBehaviour
 {
     private const bool IsScanning = true;
-    private const int StandartArayLength = 20;
+    private const int StandardArayLength = 20;
     
     [SerializeField] private float _scanningRadius;
     [SerializeField] private float _cooldown;
@@ -20,7 +20,7 @@ public class Scanning : MonoBehaviour
 
     private void Awake()
     {
-        _colliders = new Collider[StandartArayLength];
+        _colliders = new Collider[StandardArayLength];
         _wait = new WaitForSeconds(_cooldown);
     }
 
@@ -52,7 +52,6 @@ public class Scanning : MonoBehaviour
                 if(currentCollider.TryGetComponent(out Ore ore) && ore.IsBooked == false)
                 {
                     OreFound?.Invoke(ore);
-                    Debug.Log(ore.name + " Found");
                     break;
                 }
             }
