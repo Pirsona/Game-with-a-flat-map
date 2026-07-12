@@ -1,16 +1,31 @@
+using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(TextMeshProUGUI))]
 public class TextInformation : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Base _base;
+    
+    private TextMeshProUGUI _text;
+
+    private void Awake()
     {
-        
+        _text = GetComponent<TextMeshProUGUI>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        _base.ValueOreChange += UpdateText;
+    }
+
+    private void OnDisable()
+    {
+        _base.ValueOreChange -= UpdateText;
+    }
+
+
+    private void UpdateText()
+    {
+        _text.text = $"Ore collection: {_base.ValueOre}";
     }
 }

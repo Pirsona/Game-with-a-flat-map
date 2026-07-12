@@ -17,14 +17,12 @@ public class Unit : MonoBehaviour
 
     private Vector3 _targetPosition;
     private Ore _targetOre;
+    private Ore _pickedOre;
     private Vector3 _startPosition;
-    private Quaternion _startRotation;
-    
 
     private void Awake()
     {
         _startPosition = transform.position;
-        _startRotation = transform.rotation;
     }
 
     private void FixedUpdate()
@@ -36,13 +34,14 @@ public class Unit : MonoBehaviour
 
             if (Vector3Extensions.IsEnoughClose(transform.position, _targetPosition,CloseEnoughDistance) && _targetOre != null)
             {
-                _objectCapture.PickUpOre(_targetOre);
+                _pickedOre = _objectCapture.PickUpOre(_targetOre);
                 MoveToBase();
                 _targetOre = null;
             }
-            else if (Vector3Extensions.IsEnoughClose(transform.position, _startPosition,CloseEnoughDistance) && _targetOre == null)
+            else if (Vector3Extensions.IsEnoughClose(transform.position, _startPosition,CloseEnoughDistance) && _pickedOre != null)
             {
-                _objectGiver.DropOre();
+                _objectGiver.DropOre(_pickedOre);
+                _pickedOre = null;
                 IsOccupied = false;
             }
         }

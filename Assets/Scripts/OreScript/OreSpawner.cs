@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace OreScript
@@ -13,6 +15,9 @@ namespace OreScript
         private WaitForSeconds _wait;
         private Coroutine _spawnCoroutine;
 
+
+        [CanBeNull] public event Action<float> ReturnedOre;
+
         protected override void Awake()
         {
             base.Awake();
@@ -24,12 +29,18 @@ namespace OreScript
             _spawnCoroutine = StartCoroutine(Spawn());
         }
 
+        private void OnDisable()
+        {
+            StopCoroutine(_spawnCoroutine);
+        }
+
         private IEnumerator Spawn()
         {
             while (_isSpawn)
             { 
                 yield return _wait;
                 Ore spawnedOre = GetObject();
+                spawnedOre.Delivered += Return;
                 spawnedOre.transform.position = GetValidSpawnPosition();
             }
         }
@@ -60,5 +71,12 @@ namespace OreScript
             return randomPosition;
         }
         
+        private void Return(Ore ore)
+        {
+            ore.ResetState();
+            ore.Delivered -= Return;
+            ReturnedOre?.Invoke(ore.OreCoast);
+            ReturnObject(ore);
+        }
     }
 }

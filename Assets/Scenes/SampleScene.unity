@@ -158,7 +158,7 @@ MonoBehaviour:
   CountPoolObject: 10
   MaximumCountPoolObject: 20
   _scanRadius: 1
-  _cooldown: 2
+  _cooldown: 1.5
   _obstacleLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -657,10 +657,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1780887557334820394, guid: a010050efad893245a5c9b74c4883fce, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.2
-      objectReference: {fileID: 0}
     - target: {fileID: 3792118393486726656, guid: a010050efad893245a5c9b74c4883fce, type: 3}
       propertyPath: m_Name
       value: Unit
@@ -770,6 +766,10 @@ PrefabInstance:
       propertyPath: _units.Array.data[2]
       value: 
       objectReference: {fileID: 863266053}
+    - target: {fileID: 7818529847090203226, guid: c4c4fc2d0a912f949aaa07f99917725d, type: 3}
+      propertyPath: _cooldown
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8575047317325649490, guid: c4c4fc2d0a912f949aaa07f99917725d, type: 3}
       propertyPath: m_Name
       value: Base

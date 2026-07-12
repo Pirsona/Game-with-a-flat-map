@@ -218,6 +218,7 @@ GameObject:
   - component: {fileID: 8371483207674485237}
   - component: {fileID: 8623094832584651891}
   - component: {fileID: 3988082025972674070}
+  - component: {fileID: 5428779440620302108}
   m_Layer: 3
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -241,7 +242,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -60.4, y: 64}
+  m_AnchoredPosition: {x: -60.4, y: 48.1}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8623094832584651891
@@ -272,9 +273,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Ore collection: 0
-
-    Unit Free: 3'
+  m_text: 'Ore collection: 0'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -337,12 +336,25 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -80.86813, w: -39.015175}
+  m_margin: {x: 0, y: 44.16545, z: -113.90144, w: -39.015175}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &5428779440620302108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7814279175960568797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fe709c91753ade40bf782fbf2ec76e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _base: {fileID: 5391663922300547071}
 --- !u!1 &8575047317325649490
 GameObject:
   m_ObjectHideFlags: 0
@@ -469,6 +481,7 @@ MonoBehaviour:
   _scanner: {fileID: 7818529847090203226}
   _unitSelector: {fileID: 7770505465658902431}
   _unitSpawner: {fileID: 9098609776160935914}
+  _oreSpawner: {fileID: 0}
 --- !u!114 &7818529847090203226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -482,7 +495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scanningRadius: 30
-  _cooldown: 2
+  _cooldown: 1
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
