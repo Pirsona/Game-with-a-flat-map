@@ -12,7 +12,9 @@ GameObject:
   - component: {fileID: 8627223716899718522}
   - component: {fileID: 2833120762212710810}
   - component: {fileID: 4221909598862145428}
-  m_Layer: 0
+  - component: {fileID: 1579712525108112867}
+  - component: {fileID: 5249562406548039188}
+  m_Layer: 6
   m_Name: Ore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,3 +107,27 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1579712525108112867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7940715983819389382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f2b3b37b33e8ba45a8c073a81685e53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5249562406548039188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7940715983819389382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2358f7c3009c5194da6fd0c78da43a4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

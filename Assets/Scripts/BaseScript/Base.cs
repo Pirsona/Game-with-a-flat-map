@@ -1,18 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Base : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Scanning _scanner;
+    [SerializeField] private UnitSelector _unitSelector;
+    [SerializeField] private UnitSpawner _unitSpawner;
+
+    private void OnEnable()
     {
-        
+        _scanner.OreFound += OreFound;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
+        _scanner.OreFound -= OreFound;
+    }
+
+
+    private void OreFound(Ore ore)
+    {
+        Debug.Log("Searching Unit");
+        Unit freeUnit = _unitSelector.GetFreeUnit();
         
+        
+        if (freeUnit != null)
+        {
+            Debug.Log("Find Unit " + freeUnit.name);
+            ore.BookOre();
+            freeUnit.MoveToOre(ore);
+        }
     }
 }
+ 

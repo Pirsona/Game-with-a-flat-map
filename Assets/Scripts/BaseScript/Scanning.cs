@@ -1,18 +1,61 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 
 public class Scanning : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private const bool IsScanning = true;
+    private const int StandartArayLength = 20;
+    
+    [SerializeField] private float _scanningRadius;
+    [SerializeField] private float _cooldown;
+    [SerializeField] private LayerMask _layerMask;
+    
+    private WaitForSeconds _wait;
+    private Coroutine _coroutine;
+    private Collider[] _colliders;
+    
+    public event Action<Ore> OreFound;
+
+    private void Awake()
     {
-        
+        _colliders = new Collider[StandartArayLength];
+        _wait = new WaitForSeconds(_cooldown);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        _coroutine = StartCoroutine(ScanForOre());
+    }
+
+    private void OnDisable()
+    {
+        if (_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+        }
+    }
+    
+    private IEnumerator ScanForOre()
+    {
+        while (IsScanning)
+        {
+            yield return _wait;
+            
+            int colliders = Physics.OverlapSphereNonAlloc(transform.position, _scanningRadius, _colliders, _layerMask);
+
+            for (int i = 0; i < colliders; i++)
+            {
+                Collider currentCollider = _colliders[i];
+                
+                if(currentCollider.TryGetComponent(out Ore ore) && ore.IsBooked == false)
+                {
+                    OreFound?.Invoke(ore);
+                    Debug.Log(ore.name + " Found");
+                    break;
+                }
+            }
+        }
     }
 }

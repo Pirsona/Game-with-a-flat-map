@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitRotater : MonoBehaviour
+public class OreCollider : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()

@@ -1,18 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UnitMover : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    
+    public void MoveToTarget(Vector3 target, float speed)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * speed);
     }
 }
