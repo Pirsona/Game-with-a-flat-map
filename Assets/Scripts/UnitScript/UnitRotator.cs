@@ -7,7 +7,10 @@ public class UnitRotator : MonoBehaviour
         Vector3 targetDirection = target - transform.position;
         targetDirection.y = 0;
         
-        if(targetDirection == Vector3.zero) return;
+        if(targetDirection == Vector3.zero)
+        {
+            return;
+        }
         
         Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
         

@@ -1,9 +1,8 @@
 using UnityEngine;
 
-public class ObjectCapture : MonoBehaviour
+public class ObjectInteracting : MonoBehaviour
 {
     [SerializeField] private Transform _capturePoint;
-    
     
     public Ore PickUpOre(Ore ore)
     {
@@ -12,5 +11,11 @@ public class ObjectCapture : MonoBehaviour
         ore.DisableCollider();
         
         return ore;
+    }
+    
+    public void DropOre(Ore ore)
+    {
+        ore.transform.SetParent(null);
+        ore.Collecting();
     }
 }

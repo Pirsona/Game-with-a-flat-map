@@ -3,41 +3,63 @@ using UnityEngine;
 
 public class Base : MonoBehaviour
 {
-    [SerializeField] private Scanning _scanner;
+    [SerializeField] private Scaner _scanner;
     [SerializeField] private UnitSelector _unitSelector;
-    [SerializeField] private UnitSpawner _unitSpawner;
-    [SerializeField] private OreSpawner _oreSpawner;
+    [SerializeField] private OreDataBase _oreData;
+    
+    public event Action ValueOreChanged;
     
     public float ValueOre { get; private set; }
-    
-    public event Action ValueOreChange;
 
     private void OnEnable()
     {
-        _oreSpawner.ReturnedOre += OreCollected;
-        _scanner.OreFound += OreFound;
+        _scanner.OreFound += SendCollectOre;
     }
 
     private void OnDisable()
     {
-        _oreSpawner.ReturnedOre -= OreCollected;
-        _scanner.OreFound -= OreFound;
+        _scanner.OreFound -= SendCollectOre;
     }
 
-    private void OreFound(Ore ore)
+    private void SendCollectOre(Ore ore)
     {
-        Unit freeUnit = _unitSelector.GetFreeUnit();
+        _oreData.CheckIsNewOre(ore);
         
-        if (freeUnit != null)
+        SendUnit();
+    }
+
+    private void SendUnit()
+    {
+        while (true) 
         {
-            ore.BookOre();
-            freeUnit.MoveToOre(ore);
+            Unit freeUnit = _unitSelector.GetFreeUnit();
+            
+            if (freeUnit == null) break; 
+
+            Ore ore = _oreData.GetOreForUnit();
+            
+            if (ore != null)
+            {
+                freeUnit.BecameFree += BackUnit;
+                freeUnit.MoveToOre(ore); 
+            }
+            else
+            {
+                _unitSelector.ReleaseUnit(freeUnit);
+                break;
+            }
         }
     }
     
-    private void OreCollected(float value)
+    private void BackUnit(Unit unit, Ore ore)
     {
-        ValueOre += value;
-        ValueOreChange?.Invoke();
+        unit.BecameFree -= BackUnit;
+        _unitSelector.ReleaseUnit(unit); 
+        
+        ValueOre += ore.OreCost;
+        _oreData.RemoveFromBook(ore);
+        ValueOreChanged?.Invoke();
+        
+        SendUnit(); 
     }
 }

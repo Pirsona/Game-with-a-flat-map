@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 
-public class Scanning : MonoBehaviour
+public class Scaner : MonoBehaviour
 {
     private const bool IsScanning = true;
     private const int StandardArayLength = 20;
@@ -49,10 +49,9 @@ public class Scanning : MonoBehaviour
             {
                 Collider currentCollider = _colliders[i];
                 
-                if(currentCollider.TryGetComponent(out Ore ore) && ore.IsBooked == false)
+                if(currentCollider.TryGetComponent(out Ore ore))
                 {
                     OreFound?.Invoke(ore);
-                    break;
                 }
             }
         }

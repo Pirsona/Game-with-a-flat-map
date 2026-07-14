@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 1030377178202605618}
   - component: {fileID: 3887973298448145970}
   - component: {fileID: 9045442930328659953}
-  - component: {fileID: 680584051333411204}
   - component: {fileID: 8696965559623734673}
   m_Layer: 7
   m_Name: Unit
@@ -156,8 +155,7 @@ MonoBehaviour:
   _config: {fileID: 11400000, guid: cb04079bae34f804fa3841a4d43fd38d, type: 2}
   _mover: {fileID: 3887973298448145970}
   _rotator: {fileID: 9045442930328659953}
-  _objectCapture: {fileID: 680584051333411204}
-  _objectGiver: {fileID: 8696965559623734673}
+  _objectInteracting: {fileID: 8696965559623734673}
 --- !u!114 &3887973298448145970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,19 +180,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c717a64b2ead6c47b48c9c2b4af1fdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &680584051333411204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3792118393486726656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e74ba441b83eb542ad3ada360615d3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _capturePoint: {fileID: 1780887557334820394}
 --- !u!114 &8696965559623734673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,6 +192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b6e265dc2540024cbf9c584246dba37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _capturePoint: {fileID: 1780887557334820394}
 --- !u!1 &6187480456072741658
 GameObject:
   m_ObjectHideFlags: 0

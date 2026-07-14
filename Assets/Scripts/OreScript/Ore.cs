@@ -8,19 +8,13 @@ public class Ore : MonoBehaviour
     
     private Collider _collider;
     
-    public bool IsBooked { get; private set; } = false;
-    public float OreCoast => _oreConfig.Coast;
+    public float OreCost => _oreConfig.Cost;
 
-    public event Action<Ore>  Delivered;
+    public event Action<Ore>  Collected;
     
     private void Awake()
     {
         _collider = GetComponent<Collider>();
-    }
-
-    public void BookOre()
-    {
-        IsBooked = true;
     }
 
     public void DisableCollider()
@@ -28,14 +22,13 @@ public class Ore : MonoBehaviour
         _collider.enabled = false;
     }
 
-    public void Deliver()
+    public void Collecting()
     {
-        Delivered?.Invoke(this);
+        Collected?.Invoke(this);
     }
 
     public void ResetState()
     {
-        IsBooked = false;
         _collider.enabled = true;
         transform.position = Vector3.zero;
     }

@@ -15,12 +15,12 @@ public class TextInformation : MonoBehaviour
 
     private void OnEnable()
     {
-        _base.ValueOreChange += UpdateText;
+        _base.ValueOreChanged += UpdateText;
     }
 
     private void OnDisable()
     {
-        _base.ValueOreChange -= UpdateText;
+        _base.ValueOreChanged -= UpdateText;
     }
 
     private void UpdateText()

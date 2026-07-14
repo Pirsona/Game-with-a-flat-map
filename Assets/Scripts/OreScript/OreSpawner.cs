@@ -11,8 +11,6 @@ using UnityEngine;
         private bool _isSpawn = true;
         private WaitForSeconds _wait;
         private Coroutine _spawnCoroutine;
-        
-        public event Action<float> ReturnedOre;
 
         protected override void Awake()
         {
@@ -37,7 +35,7 @@ using UnityEngine;
                 yield return _wait;
                 
                 Ore spawnedOre = GetObject();
-                spawnedOre.Delivered += Return;
+                spawnedOre.Collected += Return;
                 spawnedOre.transform.position = GetValidSpawnPosition();
             }
         }
@@ -71,8 +69,7 @@ using UnityEngine;
         private void Return(Ore ore)
         {
             ore.ResetState();
-            ore.Delivered -= Return;
-            ReturnedOre?.Invoke(ore.OreCoast);
+            ore.Collected -= Return;
             ReturnObject(ore);
         }
     }
