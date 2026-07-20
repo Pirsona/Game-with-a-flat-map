@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e52f624e0361b9546b53a518d0b7f75c, type: 3}
-  m_Name: StandartUnity
+  m_Script: {fileID: 11500000, guid: 4bc09f11906f74a48af3d80f23801e9b, type: 3}
+  m_Name: BaseStandart
   m_EditorClassIdentifier: 
-  _speed: 5
-  _rotationSpeed: 360
+  _valueCreateUnit: 3
+  _valueCreateBuilding: 5

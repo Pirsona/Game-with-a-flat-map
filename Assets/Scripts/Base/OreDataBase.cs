@@ -3,16 +3,16 @@ using UnityEngine;
 
 public class OreDataBase : MonoBehaviour
 {
-    private List<Ore> _findingOre = new List<Ore>();
+    private List<Ore> _freeOres = new List<Ore>();
     private List<Ore> _bookedOre = new List<Ore>();
     
     public Ore GetOreForUnit()
     {
-        if (_findingOre.Count > 0)
+        if (_freeOres.Count > 0)
         {
-            Ore ore = _findingOre[0];
+            Ore ore = _freeOres[0];
             _bookedOre.Add(ore);
-            _findingOre.RemoveAt(0);
+            _freeOres.RemoveAt(0);
             return ore;
         }
         else
@@ -21,11 +21,11 @@ public class OreDataBase : MonoBehaviour
         }
     }
 
-    public void CheckIsNewOre(Ore ore)
+    public void AddFreeOre(Ore ore)
     {
-        if(!_findingOre.Contains(ore) && !_bookedOre.Contains(ore))
+        if(!_freeOres.Contains(ore) && !_bookedOre.Contains(ore))
         {
-            _findingOre.Add(ore);
+            _freeOres.Add(ore);
         }
     }
     

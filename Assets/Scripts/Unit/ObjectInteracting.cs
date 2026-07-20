@@ -16,6 +16,6 @@ public class ObjectInteracting : MonoBehaviour
     public void DropOre(Ore ore)
     {
         ore.transform.SetParent(null);
-        ore.Collecting();
+        ore.Collect();
     }
 }

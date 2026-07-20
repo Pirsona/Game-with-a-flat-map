@@ -3,9 +3,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewBaseConfig", menuName = "Config/Base",order = 51)]
 public class BaseConfig : ScriptableObject
 {
-    [SerializeField] private float _scanRadius;
-    [SerializeField] private float _scanCooldown;
+    [SerializeField] private int _valueCreateUnit;
+    [SerializeField] private int _valueCreateBuilding;
     
-    public float ScanRadius => _scanRadius;
-    public float ScanCooldown => _scanCooldown;
+    public int ValueCreateUnit => _valueCreateUnit;
+    public int ValueCreateBuilding => _valueCreateBuilding;
 }

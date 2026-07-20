@@ -8,7 +8,7 @@ public class Ore : MonoBehaviour
     
     private Collider _collider;
     
-    public float OreCost => _oreConfig.Cost;
+    public int OreCost => _oreConfig.Cost;
 
     public event Action<Ore>  Collected;
     
@@ -22,7 +22,7 @@ public class Ore : MonoBehaviour
         _collider.enabled = false;
     }
 
-    public void Collecting()
+    public void Collect()
     {
         Collected?.Invoke(this);
     }

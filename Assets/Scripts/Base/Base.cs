@@ -3,27 +3,41 @@ using UnityEngine;
 
 public class Base : MonoBehaviour
 {
+    [SerializeField] private BaseConfig _baseConfig;
     [SerializeField] private Scaner _scanner;
     [SerializeField] private UnitSelector _unitSelector;
     [SerializeField] private OreDataBase _oreData;
+    [SerializeField] private CollectionPoint _collectionPoint;
+    [SerializeField] private UnitSpawner _unitSpawner;
+    
+    
+    private BaseState _baseState = BaseState.SpawningUnit;
     
     public event Action ValueOreChanged;
+
+    public enum BaseState
+    {
+        SpawningUnit,
+        BuildingBase
+    }
     
-    public float ValueOre { get; private set; }
+    public int ValueOre { get; private set; }
 
     private void OnEnable()
     {
         _scanner.OreFound += SendCollectOre;
+        _collectionPoint.UnitTaskFinished += BackUnit;
     }
 
     private void OnDisable()
     {
+        _collectionPoint.UnitTaskFinished -= BackUnit;
         _scanner.OreFound -= SendCollectOre;
     }
 
     private void SendCollectOre(Ore ore)
     {
-        _oreData.CheckIsNewOre(ore);
+        _oreData.AddFreeOre(ore);
         
         SendUnit();
     }
@@ -40,8 +54,7 @@ public class Base : MonoBehaviour
             
             if (ore != null)
             {
-                freeUnit.BecameFree += BackUnit;
-                freeUnit.MoveToOre(ore); 
+                freeUnit.MoveToOre(ore, _collectionPoint); 
             }
             else
             {
@@ -53,13 +66,31 @@ public class Base : MonoBehaviour
     
     private void BackUnit(Unit unit, Ore ore)
     {
-        unit.BecameFree -= BackUnit;
-        _unitSelector.ReleaseUnit(unit); 
         
+        _unitSelector.ReleaseUnit(unit);
+
         ValueOre += ore.OreCost;
         _oreData.RemoveFromBook(ore);
         ValueOreChanged?.Invoke();
         
+        CheckValueOre();
+        
         SendUnit(); 
+    }
+
+    private void CheckValueOre()
+    {
+        if (ValueOre >= _baseConfig.ValueCreateUnit && _baseState == BaseState.SpawningUnit)
+        { 
+            ValueOre -= _baseConfig.ValueCreateUnit; 
+            ValueOreChanged?.Invoke();
+            
+            Unit createdUnit =  _unitSpawner.SpawnUnit(); 
+            _unitSelector.AddNewUnit(createdUnit);
+        }
+        else if (ValueOre >= _baseConfig.ValueCreateBuilding && _baseState == BaseState.BuildingBase)
+        {
+            
+        }
     }
 }
