@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 
-public class Scaner : MonoBehaviour
+public class Scanner : MonoBehaviour
 {
     private const bool IsScanning = true;
     private const int StandardArayLength = 20;

@@ -25,6 +25,6 @@ public class TextInformation : MonoBehaviour
 
     private void UpdateText()
     {
-        _text.text = $"Ore collection: {_base.ValueOre}";
+        _text.text = $"Ore collection: {_base.OreCount}";
     }
 }

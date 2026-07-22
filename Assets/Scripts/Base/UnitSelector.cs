@@ -7,6 +7,8 @@ public class UnitSelector : MonoBehaviour
     
     private List<Unit> _freeUnits;
     private List<Unit> _occupiedUnits = new List<Unit>();
+    
+    public int TotalUnits => _freeUnits.Count + _occupiedUnits.Count;
 
     private void Awake()
     {
@@ -16,6 +18,12 @@ public class UnitSelector : MonoBehaviour
     public void AddNewUnit(Unit unit)
     {
         _freeUnits.Add(unit);
+    }
+
+    public void RemoveUnit(Unit unit)
+    {
+        _freeUnits.Remove(unit);
+        _occupiedUnits.Remove(unit);
     }
 
     public Unit GetFreeUnit()

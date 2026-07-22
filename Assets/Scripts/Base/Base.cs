@@ -1,15 +1,18 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Renderer))]
 public class Base : MonoBehaviour
 {
     [SerializeField] private BaseConfig _baseConfig;
-    [SerializeField] private Scaner _scanner;
+    [SerializeField] private BaseSpawner _baseSpawner;
+    [SerializeField] private Scanner _scanner;
     [SerializeField] private UnitSelector _unitSelector;
     [SerializeField] private OreDataBase _oreData;
     [SerializeField] private CollectionPoint _collectionPoint;
     [SerializeField] private UnitSpawner _unitSpawner;
-    
+    [SerializeField] private BaseColor _baseColor;
+    [SerializeField] private Transform _flagPosition;
     
     private BaseState _baseState = BaseState.SpawningUnit;
     
@@ -18,21 +21,79 @@ public class Base : MonoBehaviour
     public enum BaseState
     {
         SpawningUnit,
-        BuildingBase
+        BuildingBase,
+        WaitingForBuild
     }
     
-    public int ValueOre { get; private set; }
+    public int OreCount { get; private set; }
 
     private void OnEnable()
     {
         _scanner.OreFound += SendCollectOre;
-        _collectionPoint.UnitTaskFinished += BackUnit;
+        _collectionPoint.UnitTaskFinished += UnitReturned;
     }
 
     private void OnDisable()
     {
-        _collectionPoint.UnitTaskFinished -= BackUnit;
+        _collectionPoint.UnitTaskFinished -= UnitReturned;
         _scanner.OreFound -= SendCollectOre;
+    }
+
+    public void SetDataBase(OreDataBase dataBase)
+    {
+        _oreData = dataBase;
+    }
+    
+    public void SetSelectingColor()
+    {
+       _baseColor.SetColor(_baseColor.SelectingColor);
+    }
+
+    public void SetStandardColor()
+    {
+        _baseColor.SetColor(_baseColor.StandardColor);
+    }
+
+    public void SetFlagPosition(Vector3 flagPosition)
+    {
+        flagPosition.y += _flagPosition.position.y;
+        _flagPosition.position = flagPosition;
+        _baseState = BaseState.BuildingBase;   
+    }
+
+    public void BaseBuilt(Unit unitBuilding)
+    {
+        unitBuilding.BaseBuildComplete -= BaseBuilt;
+        _flagPosition.gameObject.SetActive(false);
+        _baseState = BaseState.SpawningUnit;
+        _baseSpawner.Spawn(_flagPosition.position, unitBuilding, _oreData);
+    }
+
+    public void AddUnitInBase(Unit addingUnit)
+    {
+        _unitSelector.AddNewUnit(addingUnit);
+    }
+
+    public bool ReadyToBuild()
+    {
+        if (_unitSelector.TotalUnits <= 1) 
+        {
+            return false;
+        }
+
+
+        if (_baseState != BaseState.SpawningUnit)
+        {
+            return false;    
+        }
+
+        return true;
+    }
+
+    public Transform GetFlagPosition()
+    {
+        _flagPosition.gameObject.SetActive(true);
+        return _flagPosition.transform;
     }
 
     private void SendCollectOre(Ore ore)
@@ -64,33 +125,46 @@ public class Base : MonoBehaviour
         }
     }
     
-    private void BackUnit(Unit unit, Ore ore)
+    private void UnitReturned(Unit unit, Ore ore)
     {
         
         _unitSelector.ReleaseUnit(unit);
 
-        ValueOre += ore.OreCost;
+        OreCount += ore.OreCost;
         _oreData.RemoveFromBook(ore);
         ValueOreChanged?.Invoke();
         
-        CheckValueOre();
+        TrySpendResources();
         
         SendUnit(); 
     }
 
-    private void CheckValueOre()
+    private void TrySpendResources()
     {
-        if (ValueOre >= _baseConfig.ValueCreateUnit && _baseState == BaseState.SpawningUnit)
+        if (OreCount >= _baseConfig.ValueCreateUnit && _baseState == BaseState.SpawningUnit)
         { 
-            ValueOre -= _baseConfig.ValueCreateUnit; 
+            OreCount -= _baseConfig.ValueCreateUnit; 
             ValueOreChanged?.Invoke();
             
             Unit createdUnit =  _unitSpawner.SpawnUnit(); 
             _unitSelector.AddNewUnit(createdUnit);
         }
-        else if (ValueOre >= _baseConfig.ValueCreateBuilding && _baseState == BaseState.BuildingBase)
+        else if (OreCount >= _baseConfig.ValueCreateBuilding && _baseState == BaseState.BuildingBase)
         {
-            
+            Unit freeUnit = _unitSelector.GetFreeUnit();
+
+            if (freeUnit != null && _unitSelector.TotalUnits > 1)
+            {
+                OreCount -= _baseConfig.ValueCreateBuilding;
+                ValueOreChanged?.Invoke();
+                
+                _unitSelector.RemoveUnit(freeUnit);
+                
+                freeUnit.BaseBuildComplete += BaseBuilt;
+                freeUnit.MoveToBase(_flagPosition.position);
+                
+                _baseState = BaseState.WaitingForBuild;
+            }
         }
     }
 }

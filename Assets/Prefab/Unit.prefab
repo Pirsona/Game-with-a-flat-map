@@ -121,7 +121,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3792118393486726656}
   serializedVersion: 4
-  m_Mass: 3
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -138,7 +138,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 116
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &1030377178202605618
 MonoBehaviour:
@@ -155,6 +155,7 @@ MonoBehaviour:
   _config: {fileID: 11400000, guid: cb04079bae34f804fa3841a4d43fd38d, type: 2}
   _mover: {fileID: 3887973298448145970}
   _rotator: {fileID: 9045442930328659953}
+  _builder: {fileID: 0}
   _objectInteracting: {fileID: 8696965559623734673}
 --- !u!114 &3887973298448145970
 MonoBehaviour:

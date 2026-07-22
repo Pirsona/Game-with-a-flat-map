@@ -1,10 +1,9 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    private const float CloseEnoughDistance = 1f;
-    
     [SerializeField] private UnitConfig _config;
     [SerializeField] private UnitMover _mover;
     [SerializeField] private UnitRotator _rotator;
@@ -13,14 +12,44 @@ public class Unit : MonoBehaviour
 
     private Vector3 _startPosition;
     private CollectionPoint _collectionPoint;
+    private Coroutine _activeJob;
+
+    public event Action<Unit> BaseBuildComplete;
     
     public float Speed => _config.Speed;
     public float RotationSpeed => _config.RotationSpeed;
-    public bool IsOccupied { get; private set; } = false;
+    public bool IsBusy { get; private set; } = false;
     
     private void Start()
     {
         _startPosition = transform.position;
+    }
+    
+    public void MoveToOre(Ore ore, CollectionPoint collectionPoint)
+    {
+        if (_activeJob != null)
+        {
+            StopCoroutine(_activeJob);
+        }
+    
+        if(_collectionPoint == null)
+        {
+            _collectionPoint = collectionPoint;
+        }
+        
+        IsBusy = true; 
+        _activeJob = StartCoroutine(Collect(ore, collectionPoint));
+    }
+
+    public void MoveToBase(Vector3 basePosition)
+    {
+        if (_activeJob != null)
+        {
+            StopCoroutine(_activeJob);
+        }
+
+        IsBusy = true;
+        _activeJob = StartCoroutine(BuildBase(basePosition));
     }
     
     private IEnumerator Collect(Ore ore, CollectionPoint basePoint)
@@ -37,20 +66,20 @@ public class Unit : MonoBehaviour
         
         _objectInteracting.DropOre(ore);
 
-        IsOccupied = false;
+        IsBusy = false;
         
         _collectionPoint.FinishTask(this, ore);
     }
-    
-    public void MoveToOre(Ore ore, CollectionPoint collectionPoint)
+
+    private IEnumerator BuildBase(Vector3 targetPosition)
     {
-        if(_collectionPoint == null)
-        {
-            _collectionPoint = collectionPoint;
-        }
+        _startPosition = targetPosition;
+        _collectionPoint = null;
         
-        IsOccupied = true; 
+        yield return _rotator.RotateCoroutine(targetPosition, RotationSpeed);
+        yield return _mover.MoveCoroutine(targetPosition, Speed);
         
-        StartCoroutine(Collect(ore, collectionPoint));
+        BaseBuildComplete?.Invoke(this);
+        IsBusy = false;
     }
 }
