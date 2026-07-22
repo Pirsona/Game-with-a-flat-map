@@ -67,6 +67,8 @@ public class Base : MonoBehaviour
         _flagPosition.gameObject.SetActive(false);
         _baseState = BaseState.SpawningUnit;
         _baseSpawner.Spawn(_flagPosition.position, unitBuilding, _oreData);
+        
+        ValueOreChanged?.Invoke();
     }
 
     public void AddUnitInBase(Unit addingUnit)
